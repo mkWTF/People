@@ -14,18 +14,44 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Lunch Tray</string>
-    <string name="back_button">Back</string>
-    <string name="cancel">Cancel</string>
-    <string name="choose_accompaniment">Choose Accompaniment</string>
-    <string name="choose_entree">Choose Entree</string>
-    <string name="choose_side_dish">Choose Side Dish</string>
-    <string name="next">Next</string>
-    <string name="order_checkout">Order Checkout</string>
-    <string name="start_order">Start Order</string>
-    <string name="order_summary">Order Summary</string>
-    <string name="subtotal">Subtotal: %s</string>
-    <string name="tax">Tax: %s</string>
-    <string name="total">Total: %s</string>
-    <string name="submit">Submit</string>
+    <string name="app_name">Калькулятор вкладов</string>
+    <string name="deposit_params">Параметры вклада</string>
+    <string name="deposit_params_field_1">Первоначальный взнос</string>
+    <string name="deposit_params_field_1_placeholder">Введите сумму, например: 100000</string>
+    <string name="deposit_params_field_2">Годовая процентная ставка (%)</string>
+    <string name="deposit_params_field_2_placeholder">Например: 7.5</string>
+    <string name="deposit_params_info">Укажите сумму первоначального взноса и годовую процентную ставку. Эти параметры являются основой для расчета доходности вашего вклада.</string>
+    <string name="monthly_topup">Пополнение и период</string>
+    <string name="monthly_topup_field_1">Ежемесячное пополнение</string>
+    <string name="monthly_topup_field_1_placeholder">Например: 5000 (0 если не планируете пополнять)</string>
+    <string name="monthly_topup_field_2">Период вклада (месяцев)</string>
+    <string name="monthly_topup_field_2_placeholder">Например: 12</string>
+    <string name="monthly_topup_info">Укажите сумму ежемесяного пополнения и срок вклада в месяцах. Если не планируете пополнять вклад, укажите 0 в поле пополнения</string>
+
+    <string name="results">Результаты расчета</string>
+    <string name="results_f_1">Итоговые суммы</string>
+    <string name="results_f_1_1">Итоговая сумма</string>
+    <string name="results_f_1_2">Доход от процентов</string>
+    <string name="results_f_1_3">Процент дохода</string>
+
+    <string name="results_f_2_3">Всего пополнено</string>
+    <string name="results_f_2_4">Общая сумма вложений</string>
+
+    <string name="results_f_3">Условия вклада</string>
+    <string name="results_f_3_1">Годовая ставка</string>
+    <string name="results_f_3_2">Срок вклада</string>
+    <string name="results_f_3_3">Месячная ставка</string>
+
+    <string name="results_f_4">Статистика</string>
+    <string name="results_f_4_1">Эффективность вклада</string>
+    <string name="results_f_4_prof">Выгодно</string>
+    <string name="results_f_4_nprof">Не выгодно</string>
+    <string name="results_f_4_2">Среднемесячный доход</string>
+
+    <string name="results_new">Рассчитать новый вклад</string>
+
+    <string name="back_button">Назад</string>
+    <string name="cancel">Отмена</string>
+    <string name="next">Далее</string>
+    <string name="calculate_deposit">Рассчитать вклад</string>
 </resources>

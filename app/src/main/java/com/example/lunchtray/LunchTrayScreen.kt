@@ -18,8 +18,6 @@ package com.example.lunchtray
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -39,23 +37,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.lunchtray.datasource.DataSource
-import com.example.lunchtray.ui.AccompanimentMenuScreen
-import com.example.lunchtray.ui.CheckoutScreen
-import com.example.lunchtray.ui.EntreeMenuScreen
-import com.example.lunchtray.ui.OrderViewModel
-import com.example.lunchtray.ui.SideDishMenuScreen
+import com.example.lunchtray.ui.ResultsScreen
+import com.example.lunchtray.ui.DepositViewModel
+import com.example.lunchtray.ui.DepositParamsScreen
+import com.example.lunchtray.ui.MonthlyTopUpScreen
 import com.example.lunchtray.ui.StartOrderScreen
 
-// TODO: Screen enum
-enum class LunchTrayScreen(@StringRes val title: Int) {
+enum class DepositScreen(@StringRes val title: Int) {
     Start(title = R.string.app_name),
-    Entree(title = R.string.choose_entree),
-    SideDish(title = R.string.choose_side_dish),
-    Accompaniment(title = R.string.choose_accompaniment),
-    Checkout(title = R.string.order_checkout)
+    DepositParams(title = R.string.deposit_params),
+    MonthlyTopUp(title = R.string.monthly_topup),
+    Results(title = R.string.results)
 }
-// TODO: AppBar
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LunchTrayAppBar(
@@ -83,18 +77,16 @@ fun LunchTrayAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LunchTrayApp() {
-    // TODO: Create Controller and initialization
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = LunchTrayScreen.valueOf(
-        backStackEntry?.destination?.route ?: LunchTrayScreen.Start.name
+    val currentScreen = DepositScreen.valueOf(
+        backStackEntry?.destination?.route ?: DepositScreen.Start.name
     )
     // Create ViewModel
-    val viewModel: OrderViewModel = viewModel()
+    val viewModel: DepositViewModel = viewModel()
 
     Scaffold(
         topBar = {
-            // TODO: AppBar
             LunchTrayAppBar(
                 currentScreenTitle = currentScreen.title,
                 canNavigateBack = navController.previousBackStackEntry != null,
@@ -107,82 +99,54 @@ fun LunchTrayApp() {
         // TODO: Navigation host
         NavHost(
             navController = navController,
-            startDestination = LunchTrayScreen.Start.name,
+            startDestination = DepositScreen.Start.name,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = LunchTrayScreen.Start.name) {
+            composable(route = DepositScreen.Start.name) {
                 StartOrderScreen(
                     onStartOrderButtonClicked = {
-                        navController.navigate(LunchTrayScreen.Entree.name)
+                        navController.navigate(DepositScreen.DepositParams.name)
                     },
-                    modifier = Modifier
-                        .fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 )
             }
-            composable(route = LunchTrayScreen.Entree.name) {
-                EntreeMenuScreen(
-                    options = DataSource.entreeMenuItems,
+            composable(route = DepositScreen.DepositParams.name) {
+                DepositParamsScreen(
                     onCancelButtonClicked = {
-                        viewModel.resetOrder()
-                        navController.popBackStack(LunchTrayScreen.Start.name, inclusive = false)
+                        viewModel.resetDeposit()
+                        navController.popBackStack(DepositScreen.Start.name, inclusive = false)
                     },
-                    onNextButtonClicked = {
-                        navController.navigate(LunchTrayScreen.SideDish.name)
-                    },
-                    onSelectionChanged = { item ->
-                        viewModel.updateEntree(item)
+                    onNextButtonClicked = { initialDeposit, annualRate ->
+                        viewModel.updateDepositParams(initialDeposit, annualRate)
+                        navController.navigate(DepositScreen.MonthlyTopUp.name)
                     },
                     modifier = Modifier
-                        .verticalScroll(rememberScrollState())
+                        .padding(innerPadding)
                 )
             }
-            composable(route = LunchTrayScreen.SideDish.name) {
-                SideDishMenuScreen(
-                    options = DataSource.sideDishMenuItems,
+            composable(route = DepositScreen.MonthlyTopUp.name) {
+                MonthlyTopUpScreen(
                     onCancelButtonClicked = {
-                        viewModel.resetOrder()
-                        navController.popBackStack(LunchTrayScreen.Start.name, inclusive = false)
+                        viewModel.resetDeposit()
+                        navController.popBackStack(DepositScreen.Start.name, inclusive = false)
                     },
-                    onNextButtonClicked = {
-                        navController.navigate(LunchTrayScreen.Accompaniment.name)
+                    onNextButtonClicked = { monthlyTopUp, periodMonths ->
+                        viewModel.updateMonthlyTopUp(monthlyTopUp, periodMonths)
+                        viewModel.calculateResults()
+                        navController.navigate(DepositScreen.Results.name)
                     },
-                    onSelectionChanged = { item ->
-                        viewModel.updateSideDish(item)
-                    },
-                    modifier = Modifier
-                        .verticalScroll(rememberScrollState())
+                    modifier = Modifier.padding(innerPadding)
                 )
             }
-            composable(route = LunchTrayScreen.Accompaniment.name) {
-                AccompanimentMenuScreen(
-                    options = DataSource.accompanimentMenuItems,
-                    onCancelButtonClicked = {
-                        viewModel.resetOrder()
-                        navController.popBackStack(LunchTrayScreen.Start.name, inclusive = false)
-                    },
-                    onNextButtonClicked = {
-                        navController.navigate(LunchTrayScreen.Checkout.name)
-                    },
-                    onSelectionChanged = { item ->
-                        viewModel.updateAccompaniment(item)
+            composable(route = DepositScreen.Results.name) {
+                ResultsScreen(
+                    depositUiState = uiState,
+                    onRestartButtonClicked = {
+                        viewModel.resetDeposit()
+                        navController.popBackStack(DepositScreen.Start.name, inclusive = false)
                     },
                     modifier = Modifier
-                        .verticalScroll(rememberScrollState())
-                )
-            }
-            composable(route = LunchTrayScreen.Checkout.name) {
-                CheckoutScreen(
-                    orderUiState = uiState,
-                    onCancelButtonClicked = {
-                        viewModel.resetOrder()
-                        navController.popBackStack(LunchTrayScreen.Start.name, inclusive = false)
-                    },
-                    onNextButtonClicked = {
-                        viewModel.resetOrder()
-                        navController.popBackStack(LunchTrayScreen.Start.name, inclusive = false)
-                    },
-                    modifier = Modifier
-                        .verticalScroll(rememberScrollState())
+                        .padding(innerPadding)
                         .padding(
                             start = dimensionResource(R.dimen.padding_medium),
                             end = dimensionResource(R.dimen.padding_medium),

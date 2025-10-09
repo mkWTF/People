@@ -45,7 +45,7 @@ fun StartOrderScreen(
             onClick = onStartOrderButtonClicked,
             Modifier.widthIn(min = 250.dp)
         ) {
-            Text(stringResource(R.string.start_order))
+            Text(stringResource(R.string.calculate_deposit))
         }
     }
 }
