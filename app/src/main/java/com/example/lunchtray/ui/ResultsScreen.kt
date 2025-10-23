@@ -26,6 +26,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -42,6 +43,7 @@ import com.example.lunchtray.model.DepositUiState
 fun ResultsScreen(
     depositUiState: DepositUiState,
     onRestartButtonClicked: () -> Unit,
+    onDBButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -165,20 +167,19 @@ fun ResultsScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Кнопка возврата
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = dimensionResource(R.dimen.padding_medium)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
-        ) {
-            OutlinedButton(
-                modifier = Modifier.weight(1f),
+            Button(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = onRestartButtonClicked
             ) {
                 Text(stringResource(R.string.results_new).uppercase())
             }
-        }
+            OutlinedButton (
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onDBButtonClicked
+            ) {
+                Text(stringResource(R.string.results_add_to_db).uppercase())
+            }
+
 
         // Добавляем дополнительный отступ внизу для удобства скролла
         Text(
@@ -219,6 +220,7 @@ fun ResultsScreenPreview() {
     ResultsScreen(
         depositUiState = DepositUiState(),
         onRestartButtonClicked = {},
+        onDBButtonClicked = {},
         modifier = Modifier
             .padding(dimensionResource(R.dimen.padding_medium))
     )

@@ -42,12 +42,14 @@ import com.example.lunchtray.ui.DepositViewModel
 import com.example.lunchtray.ui.DepositParamsScreen
 import com.example.lunchtray.ui.MonthlyTopUpScreen
 import com.example.lunchtray.ui.StartOrderScreen
+import com.example.lunchtray.ui.DepositListScreen
 
 enum class DepositScreen(@StringRes val title: Int) {
     Start(title = R.string.app_name),
     DepositParams(title = R.string.deposit_params),
     MonthlyTopUp(title = R.string.monthly_topup),
-    Results(title = R.string.results)
+    Results(title = R.string.results),
+    DepositList(title = R.string.deposit_list)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,6 +109,9 @@ fun LunchTrayApp() {
                     onStartOrderButtonClicked = {
                         navController.navigate(DepositScreen.DepositParams.name)
                     },
+                    onDBButtonClicked = {
+                        navController.navigate(DepositScreen.DepositList.name)
+                    },
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -145,6 +150,11 @@ fun LunchTrayApp() {
                         viewModel.resetDeposit()
                         navController.popBackStack(DepositScreen.Start.name, inclusive = false)
                     },
+                    onDBButtonClicked = {
+                        viewModel.insertUser(uiState)
+                        viewModel.resetDeposit()
+                        navController.popBackStack(DepositScreen.Start.name, inclusive = false)
+                    },
                     modifier = Modifier
                         .padding(innerPadding)
                         .padding(
@@ -152,6 +162,9 @@ fun LunchTrayApp() {
                             end = dimensionResource(R.dimen.padding_medium),
                         )
                 )
+            }
+            composable(route = DepositScreen.DepositList.name){
+                DepositListScreen ()
             }
         }
     }

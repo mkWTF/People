@@ -17,6 +17,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("kotlin-kapt") // Добавьте эту строку
 }
 
 android {
@@ -63,7 +64,9 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.room:room-runtime:2.8.2")
+    implementation("androidx.room:room-ktx:2.8.2") // Для Kotlin корутин
+    kapt("androidx.room:room-compiler:2.8.2")
     implementation(platform("androidx.compose:compose-bom:2024.12.01"))
     implementation("androidx.activity:activity-compose:1.9.3")
     implementation("androidx.compose.material3:material3")

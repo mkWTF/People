@@ -49,9 +49,19 @@
     <string name="results_f_4_2">Среднемесячный доход</string>
 
     <string name="results_new">Рассчитать новый вклад</string>
+    <string name="results_add_to_db">Добавить в базу данных</string>
+
+    <string name="deposit_list">История вкладов</string>
+    <string name="deposit_list_field">Просмотрите свои сохраненные вклады</string>
+    <string name="deposit_list_nothing">Нет сохраненных вкладов</string>
+    <string name="deposit_list_cont">Вклад %s</string>
+    <string name="deposit_list_delete">Удалить</string>
+    <string name="deposit_list_delete_all">Удалить все</string>
 
     <string name="back_button">Назад</string>
     <string name="cancel">Отмена</string>
     <string name="next">Далее</string>
     <string name="calculate_deposit">Рассчитать вклад</string>
+    <string name="to_database">Перейти к истории вкладов</string>
+
 </resources>

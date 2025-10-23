@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,11 +30,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.lunchtray.R
 
 @Composable
 fun StartOrderScreen(
     onStartOrderButtonClicked: () -> Unit,
+    onDBButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -45,7 +48,13 @@ fun StartOrderScreen(
             onClick = onStartOrderButtonClicked,
             Modifier.widthIn(min = 250.dp)
         ) {
-            Text(stringResource(R.string.calculate_deposit))
+            Text(stringResource(R.string.calculate_deposit), fontSize = 16.sp)
+        }
+        OutlinedButton (
+            onClick = onDBButtonClicked,
+            Modifier.widthIn(min = 250.dp)
+        ) {
+            Text(stringResource(R.string.to_database), fontSize = 16.sp)
         }
     }
 }
@@ -55,6 +64,7 @@ fun StartOrderScreen(
 fun StartOrderPreview(){
     StartOrderScreen(
         onStartOrderButtonClicked = {},
+        onDBButtonClicked = {},
         modifier = Modifier
             .padding(dimensionResource(R.dimen.padding_medium))
             .fillMaxSize()
